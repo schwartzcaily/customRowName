@@ -1,0 +1,63 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+#create empty list
+df = []
+
+#create 5 random dataframes
+df1 = pd.DataFrame(np.random.randint(0,100,size=(100, 6)), columns=list('ABCDEF'))
+df2 = pd.DataFrame(np.random.randint(0,100,size=(100, 6)), columns=list('ABCDEF'))
+df3 = pd.DataFrame(np.random.randint(0,100,size=(100, 6)), columns=list('ABCDEF'))
+df4 = pd.DataFrame(np.random.randint(0,100,size=(100, 6)), columns=list('ABCDEF'))
+df5 = pd.DataFrame(np.random.randint(0,100,size=(100, 6)), columns=list('ABCDEF'))
+
+#create list of dataframes
+df.append(df1)
+df.append(df2)
+df.append(df3)
+df.append(df4)
+df.append(df5)
+
+#List of custom row labels
+rows = ['{}'.format(row) for row in ['DF1', 'DF2', 'DF3', 'DF4','DF5']]
+
+#Where row labels will be placed within the subplot
+#This will change based on how many columsn there are
+axis = [0,6,12,18,24]
+
+#set list of colors for each column
+c = ['#a50026','#f46d43','#fee08b','#d9ef8b','#66bd63','#006837']
+
+#Set up figure, 5 rows and 6 columns
+fig,ax = plt.subplots(5,6,figsize=(18,16))
+#Unravel ax
+ax = ax.ravel()
+#Set title for figure
+fig.suptitle('Custom Row Titles', fontsize = 18, y = 0.93)
+
+#Set i to use to locate ax
+i=0
+#call dataframes from list
+for dataframe in df:
+    #j will be used to loop through colors for each column
+    j = 0
+    #loop through each column within dataframe
+    for col in dataframe:
+        #plot each column in dataframe, color is based on list of colors and their position
+        ax[i].plot(dataframe[str(col)], c = c[j])
+        #Turning off frame; If you want frame borders, comment out this line
+        ax[i].set_frame_on(False)
+        #Setting tick marks to be empty, not visible
+        plt.setp(ax[i], xticks=[], yticks=[])
+        #Set title of each subplot
+        ax[i].set_title(str(col), size = 15)
+        #Set title for each row where rows and axis is a variable listed above
+        for ax1, row in zip(axis,rows):
+            plt.setp(ax[ax1], ylabel=str(row))
+        i=i+1
+        j=j+1
+plt.show()
+
+        
+        
